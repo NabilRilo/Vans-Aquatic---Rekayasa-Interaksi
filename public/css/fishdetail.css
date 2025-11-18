@@ -1,0 +1,107 @@
+/* ===========================
+   CSS BARU: Detail Produk Kompak & Elegan
+   =========================== */
+
+/* CONTAINER UTAMA */
+.card {
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05); /* Shadow halus */
+    border: none !important;
+}
+
+/* GAMBAR UTAMA - Carousel Gambar Utama */
+.product-image-main {
+    width: 100%;
+    height: 380px; /* Tinggi optimal untuk desktop/laptop */
+    object-fit: cover;
+    border-radius: 0.6rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+/* Efek zoom ringan */
+.product-image-main:hover {
+    transform: scale(1.01);
+}
+
+/* Kontrol Carousel */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 12px;
+}
+
+/* THUMBNAIL CONTAINER */
+.thumbnail-container {
+    display: flex;
+    gap: 0.5rem; 
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+/* THUMBNAIL GAMBAR */
+.thumbnail {
+    width: 70px; /* Ukuran kompak */
+    height: 70px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 3px solid transparent;
+    border-radius: 0.4rem;
+    transition: border-color 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0.8; /* Sedikit redup saat tidak aktif */
+}
+
+/* Thumbnail aktif */
+.thumbnail.active {
+    border-color: #0d6efd; /* Highlight warna Primary Bootstrap (Biru) */
+    opacity: 1; /* Penuh kecerahan */
+    transform: scale(1.05);
+    box-shadow: 0 0 8px rgba(13, 110, 253, 0.5); 
+}
+
+/* Thumbnail hover efek */
+.thumbnail:hover:not(.active) {
+    transform: scale(1.05);
+    opacity: 0.95;
+}
+
+/* DETAIL PRODUK */
+.product-info-list .list-group-item {
+    border: none;
+    padding: 0.6rem 1rem; /* Padding dikurangi */
+    background-color: #f8f9fa; 
+}
+
+.product-info-list .list-group-item:nth-child(even) {
+    background-color: #ffffff; /* Striping */
+}
+
+/* HEADLINE HARGA & STOK */
+.display-5 {
+    color: #343a40 !important; 
+    border-bottom: 2px solid #0d6efd; /* Garis bawah biru */
+    padding-bottom: 0.5rem;
+}
+
+/* RESPONSIF */
+@media (max-width: 992px) { /* Layar tablet/laptop kecil */
+    .product-image-main {
+        height: 320px; 
+    }
+}
+
+@media (max-width: 768px) { /* Layar mobile */
+    .product-image-main {
+        height: 280px; 
+        border-radius: 0.4rem;
+    }
+    .thumbnail {
+        width: 55px; 
+        height: 55px;
+    }
+    .display-5 {
+        font-size: 2rem; 
+    }
+}
