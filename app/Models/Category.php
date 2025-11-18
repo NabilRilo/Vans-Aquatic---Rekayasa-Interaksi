@@ -28,3 +28,5 @@ class Category extends Model
         return $this->hasMany(TambahProduk::class, 'category_id');
     }
 }
+
+// Update by Rafi 
