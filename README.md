@@ -25,7 +25,7 @@ Aplikasi belanja online untuk memesan ikan hias dan kebutuhan akuatik dengan fit
 ![alt text](image-7.png)
 
 ##  Tabel pembagian tugas (Backlog)
-| **VANS-AQUATIC**			|	                |                   |                  |                    |           |
+**VANS-AQUATIC**
 |       Fitur	            |   Product Owner	|   Scrum Master    |   Developer 1    |	Developer 2     |   Level   |
 |---------------------------|-------------------|-------------------|------------------|--------------------|-----------|
 | Login	                    |    Rafi Nabil     |   Diva Rosyda     |   Nabil Thoriq   |    Asfar Aslam     |   easy    |
