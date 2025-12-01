@@ -152,7 +152,11 @@
                                     </ul>
 
                                     <div class="text-end mt-3">
-                                        <button class="btn btn-sm btn-success">Beri Ulasan</button>
+                                        <a href="{{ route('upload.vidio') }}" class="btn btn-sm btn-success">
+    <i class="mdi mdi-video-plus me-1"></i> Upload Live Video
+</a>
+                                        <a href="{{ route('claim.garansi', $order->id) }}" class="btn btn-sm btn-success">Claim Garansi</a>
+
                                         <button class="btn btn-sm btn-outline-primary">Beli Lagi</button>
                                     </div>
                                 </div>
