@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Tambahproduk;
 use App\Models\Transaksi;
 use App\Models\TransaksiItem;
+use App\Models\ClaimGaransi;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 
 class CheckoutController extends Controller
 {
-    // Menampilkan halaman metode pembayaran
+    // 🔹 Menampilkan halaman metode pembayaran
     public function showPaymentForm()
     {
         $keranjang = session()->get('keranjang', []);
@@ -22,7 +23,7 @@ class CheckoutController extends Controller
         return view('MetodePembayaran', compact('keranjang', 'total_harga'));
     }
 
-    // Proses checkout
+    // 🔹 Proses checkout
     public function process(Request $request)
     {
         $validatedData = $request->validate([
@@ -48,7 +49,7 @@ class CheckoutController extends Controller
                 $buktiPembayaranPath = $request->file('bukti_pembayaran')->store('bukti_pembayaran', 'public');
             }
 
-            // Kurangi stok
+            // 🔸 Kurangi stok
             foreach ($keranjangItems as $productId => $item) {
                 $jumlahDibeli = $item['jumlah'];
                 $produk = Tambahproduk::where('id', $productId)->lockForUpdate()->first();
@@ -60,7 +61,7 @@ class CheckoutController extends Controller
                 }
             }
 
-            // Simpan transaksi
+            // 🔸 Simpan transaksi
             $transaksi = Transaksi::create([
                 'nama_pembeli' => $validatedData['nama'],
                 'alamat' => $validatedData['alamat'],
@@ -68,10 +69,10 @@ class CheckoutController extends Controller
                 'metode_pembayaran' => $validatedData['metode'],
                 'bukti_pembayaran' => $buktiPembayaranPath,
                 'total_harga' => $validatedData['total_harga'],
-                'status' => 'Proses', // ✅ default status
+                'status' => 'Proses',
             ]);
 
-            // Simpan item transaksi
+            // 🔸 Simpan item transaksi
             foreach ($keranjangItems as $productId => $item) {
                 TransaksiItem::create([
                     'transaksi_id' => $transaksi->id,
@@ -91,13 +92,13 @@ class CheckoutController extends Controller
         }
     }
 
-    // Halaman sukses checkout
+    // 🔹 Halaman sukses checkout
     public function success()
     {
         return view('PesananSukses');
     }
 
-    // Halaman riwayat pesanan
+    // 🔹 Halaman riwayat pesanan
     public function riwayat()
     {
         $orders = Transaksi::with('items.produk')
@@ -105,5 +106,35 @@ class CheckoutController extends Controller
             ->get();
 
         return view('RiwayatPesanan', compact('orders'));
+    }
+
+    // 🔹 Halaman Claim Garansi
+    public function claimGaransi($id)
+    {
+        $order = Transaksi::with('items.produk')->findOrFail($id);
+        return view('claim-garansi', compact('order'));
+    }
+
+    // 🔹 Proses Submit Claim Garansi
+    public function submitClaimGaransi(Request $request, $id)
+    {
+        $request->validate([
+            'alasan' => 'required|string|max:500',
+            'bukti' => 'required|file|mimes:jpg,png,jpeg,mp4,mov,avi|max:10240',
+        ]);
+
+        $order = Transaksi::findOrFail($id);
+
+        $path = $request->file('bukti')->store('bukti_garansi', 'public');
+
+        ClaimGaransi::create([
+            'transaksi_id' => $order->id,
+            'nama_pembeli' => $order->nama_pembeli,
+            'alasan' => $request->alasan,
+            'bukti' => $path,
+            'status' => 'Menunggu Konfirmasi',
+        ]);
+
+        return redirect()->route('riwayat.pesanan')->with('success', 'Claim garansi berhasil dikirim!');
     }
 }
