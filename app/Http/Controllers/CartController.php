@@ -63,3 +63,4 @@ class CartController extends Controller
         return redirect()->route('keranjang.index')->with('success', 'Jumlah produk berhasil diupdate!');
     }
 }
+// Update by diva

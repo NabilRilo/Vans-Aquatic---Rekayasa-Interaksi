@@ -29,3 +29,4 @@ class Transaksi extends Model
         return $this->hasMany(TransaksiItem::class, 'transaksi_id');
     }
 }
+//update asfar
