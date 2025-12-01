@@ -83,6 +83,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/kategori-barang', [KategoriController::class, 'index'])->name('kategori.barang');
     Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
 
-    // 🔹 Riwayat Pemesanan
-    Route::get('/riwayat-pesanan', [CheckoutController::class, 'riwayat'])->name('riwayat.pesanan');
+   // 🔹 Riwayat Pemesanan
+Route::get('/riwayat-pesanan', [CheckoutController::class, 'riwayat'])->name('riwayat.pesanan');
+
+// 🔹 Claim Garansi
+Route::get('/claim-garansi/{id}', [CheckoutController::class, 'claimGaransi'])->name('claim.garansi');
+Route::post('/claim-garansi/{id}', [CheckoutController::class, 'submitClaimGaransi'])->name('claim.garansi.submit');
+
+Route::get('/upload-vidio', function () {
+    return view('UploadVidio');
+})->name('upload.vidio');
+
 });
