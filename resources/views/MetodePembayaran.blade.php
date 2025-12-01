@@ -2,10 +2,8 @@
 
 @section('title', 'Metode Pembayaran')
 
-{{-- Push CSS khusus halaman ini ke stack 'styles' di layouts.app --}}
 @push('styles')
 <link href="{{ asset('css/metodepembayaran.css') }}" rel="stylesheet">
-{{-- Tambahkan ikon untuk metode pembayaran --}}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 @endpush
 
@@ -37,9 +35,35 @@
                             @error('no_hp')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
 
+                        {{-- Tambahan Layanan Pengemasan --}}
+                        <div class="mb-3 mt-4">
+                            <label class="form-label fw-bold">Tambahan Layanan</label>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="tambahan[]" value="Add Oksigen 50% - 5000" id="oksigen">
+                                <label class="form-check-label" for="oksigen">
+                                    Add Oksigen 50% — <strong>Rp 5.000</strong>
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="tambahan[]" value="Double Plastic Layer - 4000" id="plastik">
+                                <label class="form-check-label" for="plastik">
+                                    Double Plastic Layer — <strong>Rp 4.000</strong>
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="tambahan[]" value="Use Box - 5000" id="box">
+                                <label class="form-check-label" for="box">
+                                    Use Box — <strong>Rp 5.000</strong>
+                                </label>
+                            </div>
+                        </div>
+
                         <hr class="my-4">
 
-                        {{-- Ringkasan Pesanan (Accordion) --}}
+                        {{-- Ringkasan Pesanan --}}
                         @php
                         $keranjang = session('keranjang', []);
                         $totalBayar = array_reduce($keranjang, fn($carry, $item) => $carry + ($item['harga'] * $item['jumlah']), 0);
@@ -123,9 +147,7 @@
                             </div>
                         </label>
 
-                        {{-- === Container untuk Info Pembayaran === --}}
-
-                        {{-- Info QRIS --}}
+                        {{-- Info Pembayaran --}}
                         <div class="mt-3 text-center" id="qris-info-container" style="display:none;">
                             <div class="alert alert-info p-3">
                                 <h6 class="fw-bold alert-heading mb-2">Scan QR Code di bawah untuk bayar:</h6>
@@ -134,7 +156,6 @@
                             </div>
                         </div>
 
-                        {{-- Info Rekening Bank --}}
                         <div class="mt-3" id="transfer-info-container" style="display:none;">
                             <div class="alert alert-info p-3">
                                 <h6 class="fw-bold alert-heading mb-2">Silakan transfer ke salah satu rekening:</h6>
@@ -145,7 +166,6 @@
                             </div>
                         </div>
 
-                        {{-- Info E-Wallet --}}
                         <div class="mt-3" id="ewallet-info-container" style="display:none;">
                             <div class="alert alert-info p-3">
                                 <h6 class="fw-bold alert-heading mb-2">Silakan bayar ke salah satu E-Wallet:</h6>
@@ -156,7 +176,6 @@
                             </div>
                         </div>
 
-                        {{-- Upload Bukti Pembayaran --}}
                         <div class="mt-3" id="upload-bukti-container" style="display:none;">
                             <label for="bukti_pembayaran" class="form-label fw-bold">Upload Bukti Pembayaran</label>
                             <input type="file" name="bukti_pembayaran" id="bukti_pembayaran" class="form-control @error('bukti_pembayaran') is-invalid @enderror" accept="image/*,.pdf">
@@ -166,7 +185,7 @@
 
                         <hr class="my-4">
 
-                        {{-- Rincian Total --}}
+                        {{-- Total Bayar --}}
                         <div class="d-flex justify-content-between mb-3">
                             <span class="text-muted">Subtotal</span>
                             <strong>Rp {{ number_format($totalBayar,0,',','.') }}</strong>
@@ -203,8 +222,6 @@
 
         function updatePaymentView() {
             const selectedMethod = document.querySelector('input[name="metode"]:checked');
-
-            // Reset semua
             uploadContainer.style.display = 'none';
             transferInfoContainer.style.display = 'none';
             ewalletInfoContainer.style.display = 'none';
@@ -213,7 +230,6 @@
 
             if (selectedMethod) {
                 const methodValue = selectedMethod.value;
-
                 if (methodValue === 'Transfer Bank') {
                     transferInfoContainer.style.display = 'block';
                     uploadContainer.style.display = 'block';
