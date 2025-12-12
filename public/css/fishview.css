@@ -1,17 +1,35 @@
 /* FishView.css */
 
 /* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Merriweather:wght@700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Merriweather:wght=700;900&display=swap');
+
+/* === PERBAIKAN UNTUK FULL BACKGROUND GRADIENT DIMULAI DI SINI === */
+html {
+    height: 100%; 
+}
 
 body {
+    /* Set tinggi minimal 100% dari viewport */
+    min-height: 100vh; 
+    margin: 0;
+    padding: 0;
+    
     font-family: 'Poppins', sans-serif;
-    background-color: #f8f9fa; /* Warna background body yang lembut */
+    /* Pindahkan gradient ke body */
+    background: linear-gradient(to bottom, #e0f2f7, #ffffff); 
+    background-color: transparent; 
     color: #343a40;
+    
+    /* PENTING: Gunakan fixed agar gradient mengisi penuh dan tetap di tempat saat scroll */
+    background-attachment: fixed; 
 }
 
 .fish-view-container {
-    background: linear-gradient(to bottom, #e0f2f7, #ffffff); /* Gradient background lembut */
+    /* Hapus gradient di sini agar tidak menimpa body */
+    background: none; 
+    min-height: 100vh; /* Memastikan container minimal setinggi viewport untuk layout */
 }
+/* === PERBAIKAN UNTUK FULL BACKGROUND GRADIENT SELESAI DI SINI === */
 
 .page-title {
     font-family: 'Merriweather', serif;
@@ -153,7 +171,6 @@ body {
     font-weight: 700;
     color: #0a9396;
 }
-
 .product-detail-button {
     border-radius: 50px;
     padding: 10px 20px;
