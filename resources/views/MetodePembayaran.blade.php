@@ -40,21 +40,21 @@
                             <label class="form-label fw-bold">Tambahan Layanan</label>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="tambahan[]" value="Add Oksigen 50% - 5000" id="oksigen">
+                                <input class="form-check-input" type="checkbox" name="tambahan[]" value="Add Oksigen 50% - 5000" id="oksigen" {{ in_array('Add Oksigen 50% - 5000', old('tambahan', [])) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="oksigen">
                                     Add Oksigen 50% — <strong>Rp 5.000</strong>
                                 </label>
                             </div>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="tambahan[]" value="Double Plastic Layer - 4000" id="plastik">
+                                <input class="form-check-input" type="checkbox" name="tambahan[]" value="Double Plastic Layer - 4000" id="plastik" {{ in_array('Double Plastic Layer - 4000', old('tambahan', [])) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="plastik">
                                     Double Plastic Layer — <strong>Rp 4.000</strong>
                                 </label>
                             </div>
 
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="tambahan[]" value="Use Box - 5000" id="box">
+                                <input class="form-check-input" type="checkbox" name="tambahan[]" value="Use Box - 5000" id="box" {{ in_array('Use Box - 5000', old('tambahan', [])) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="box">
                                     Use Box — <strong>Rp 5.000</strong>
                                 </label>
@@ -185,17 +185,25 @@
 
                         <hr class="my-4">
 
-                        {{-- Total Bayar --}}
-                        <div class="d-flex justify-content-between mb-3">
-                            <span class="text-muted">Subtotal</span>
-                            <strong>Rp {{ number_format($totalBayar,0,',','.') }}</strong>
+                        {{-- START: PERBAIKAN DI BAGIAN TOTAL BAYAR --}}
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Subtotal (Harga Barang)</span>
+                            <strong id="subtotal-barang">Rp {{ number_format($totalBayar,0,',','.') }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3" id="biaya-tambahan-row" style="display: none;">
+                            <span class="text-muted">Biaya Tambahan</span>
+                            <strong id="biaya-tambahan-value">Rp 0</strong>
                         </div>
                         <div class="d-flex justify-content-between fw-bold fs-5">
                             <span>Total Bayar</span>
-                            <span>Rp {{ number_format($totalBayar,0,',','.') }}</span>
+                            <span id="final-total-bayar">Rp {{ number_format($totalBayar,0,',','.') }}</span>
                         </div>
+                        {{-- END: PERBAIKAN DI BAGIAN TOTAL BAYAR --}}
 
-                        <input type="hidden" name="total_harga" value="{{ $totalBayar }}">
+                        {{-- TAMBAHAN: Hidden input untuk Subtotal Awal (Basis perhitungan JS) --}}
+                        <input type="hidden" id="initial_subtotal_value" value="{{ $totalBayar }}">
+                        {{-- Ini adalah hidden input yang akan dikirim ke controller dengan nilai Total Akhir --}}
+                        <input type="hidden" name="total_harga" id="total_harga_input" value="{{ old('total_harga', $totalBayar) }}">
 
                         <div class="d-grid mt-4">
                             <button type="submit" class="btn btn-primary btn-lg" {{ count($keranjang) == 0 ? 'disabled' : '' }}>
@@ -220,6 +228,64 @@
         const ewalletInfoContainer = document.getElementById('ewallet-info-container');
         const qrisInfoContainer = document.getElementById('qris-info-container');
 
+        // Elemen-elemen untuk kalkulasi total
+        const tambahanCheckboxes = document.querySelectorAll('input[name="tambahan[]"]');
+        const biayaTambahanRow = document.getElementById('biaya-tambahan-row');
+        const biayaTambahanValueElement = document.getElementById('biaya-tambahan-value');
+        const finalTotalBayarElement = document.getElementById('final-total-bayar');
+        const totalHargaInput = document.getElementById('total_harga_input');
+
+        // PERBAIKAN: Mengambil Subtotal Awal dari hidden input baru yang aman dari old() data form
+        const initialSubtotal = parseInt(document.getElementById('initial_subtotal_value').value); 
+
+
+        // --- FUNGSI DINAMIS UNTUK MENGHITUNG TOTAL BAYAR ---
+        function updateTotalBayar() {
+            let biayaTambahan = 0;
+            
+            // 1. Hitung total biaya dari layanan tambahan yang dicentang
+            tambahanCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    const value = checkbox.value;
+                    const hargaText = value.split(' - ').pop(); 
+                    const harga = parseInt(hargaText.trim());
+                    
+                    if (!isNaN(harga)) {
+                        biayaTambahan += harga;
+                    }
+                }
+            });
+
+            // 2. Hitung Total Bayar
+            const newTotalBayar = initialSubtotal + biayaTambahan;
+
+            // 3. Update tampilan di halaman
+            
+            // Update tampilan Biaya Tambahan
+            if (biayaTambahan > 0) {
+                biayaTambahanRow.style.display = 'flex';
+                biayaTambahanValueElement.textContent = 'Rp ' + biayaTambahan.toLocaleString('id-ID'); 
+            } else {
+                biayaTambahanRow.style.display = 'none';
+            }
+            
+            // Update tampilan Total Bayar
+            finalTotalBayarElement.textContent = 'Rp ' + newTotalBayar.toLocaleString('id-ID');
+            
+            // Update hidden input agar nilai yang dikirim ke server benar
+            totalHargaInput.value = newTotalBayar;
+        }
+
+        // Hubungkan event listener untuk kalkulasi total
+        tambahanCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateTotalBayar);
+        });
+        
+        // Panggil fungsi sekali saat halaman dimuat
+        updateTotalBayar();
+
+
+        // --- FUNGSI UNTUK MENGATUR TAMPILAN PEMBAYARAN ---
         function updatePaymentView() {
             const selectedMethod = document.querySelector('input[name="metode"]:checked');
             uploadContainer.style.display = 'none';
@@ -230,19 +296,19 @@
 
             if (selectedMethod) {
                 const methodValue = selectedMethod.value;
-                if (methodValue === 'Transfer Bank') {
-                    transferInfoContainer.style.display = 'block';
+                if (methodValue === 'Transfer Bank' || methodValue === 'E-Wallet' || methodValue === 'QRIS') {
+                    
+                    if (methodValue === 'Transfer Bank') {
+                        transferInfoContainer.style.display = 'block';
+                    } else if (methodValue === 'E-Wallet') {
+                        ewalletInfoContainer.style.display = 'block';
+                    } else if (methodValue === 'QRIS') {
+                        qrisInfoContainer.style.display = 'block';
+                    }
+                    
                     uploadContainer.style.display = 'block';
                     uploadInput.required = true;
-                } else if (methodValue === 'E-Wallet') {
-                    ewalletInfoContainer.style.display = 'block';
-                    uploadContainer.style.display = 'block';
-                    uploadInput.required = true;
-                } else if (methodValue === 'QRIS') {
-                    qrisInfoContainer.style.display = 'block';
-                    uploadContainer.style.display = 'block';
-                    uploadInput.required = true;
-                }
+                } 
             }
         }
 
