@@ -7,6 +7,15 @@ use App\Http\Controllers\FishController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\CartController; 
 use App\Http\Controllers\AuthController;
+/*
+|--------------------------------------------------------------------------
+| Web Routes - Vans Aquatic
+|--------------------------------------------------------------------------
+|
+| File ini berisi daftar route untuk aplikasi Vans Aquatic.
+| Dikelola oleh Tim Pengembang 
+|
+*/
 
 /*
 |--------------------------------------------------------------------------
