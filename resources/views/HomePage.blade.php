@@ -114,52 +114,52 @@
             <p class="lead text-secondary">Pengalaman terbaik dalam berbelanja ikan hias hanya di sini.</p>
         </div>
     </div>
+
     <div class="row g-4">
+
+        {{-- Card 1 --}}
         <div class="col-lg-4 col-md-6 mb-4 text-center">
             <div class="card h-100 border-0 p-4 shadow-lg feature-card">
                 <div class="icon-circle mb-4 mx-auto">
-                    <i class="mdi mdi-fish display-4 text-white"></i>
+                    <img src="{{ asset('images/whyus/quality.png') }}"
+                         alt="Koleksi Ikan"
+                         class="img-fluid rounded-circle"
+                         style="width: 80px; height: 80px; object-fit: cover;">
                 </div>
                 <h3 class="fw-bold mb-3 text-dark">Koleksi Ikan Berkualitas</h3>
                 <p class="text-secondary">Kami menyediakan ikan hias sehat dari sumber terpercaya dengan berbagai jenis dan warna yang memukau.</p>
             </div>
         </div>
+
+        {{-- Card 2 --}}
         <div class="col-lg-4 col-md-6 mb-4 text-center">
             <div class="card h-100 border-0 p-4 shadow-lg feature-card">
                 <div class="icon-circle mb-4 mx-auto">
-                    <i class="mdi mdi-truck-fast display-4 text-white"></i>
+                    <img src="{{ asset('images/whyus/shipping.png') }}"
+                         alt="Pengiriman Aman"
+                         class="img-fluid rounded-circle"
+                         style="width: 80px; height: 80px; object-fit: cover;">
                 </div>
                 <h3 class="fw-bold mb-3 text-dark">Pengiriman Aman & Cepat</h3>
                 <p class="text-secondary">Kemasan khusus dan kurir terpercaya memastikan ikan sampai dalam kondisi prima ke seluruh Indonesia.</p>
             </div>
         </div>
+
+        {{-- Card 3 --}}
         <div class="col-lg-4 col-md-6 mb-4 text-center">
             <div class="card h-100 border-0 p-4 shadow-lg feature-card">
                 <div class="icon-circle mb-4 mx-auto">
-                    <i class="mdi mdi-face-agent display-4 text-white"></i>
+                    <img src="{{ asset('images/whyus/support.png') }}"
+                         alt="Customer Support"
+                         class="img-fluid rounded-circle"
+                         style="width: 80px; height: 80px; object-fit: cover;">
                 </div>
                 <h3 class="fw-bold mb-3 text-dark">Dukungan Pelanggan Optimal</h3>
                 <p class="text-secondary">Tim ahli kami siap membantu dengan panduan perawatan dan menjawab setiap pertanyaan Anda.</p>
             </div>
         </div>
+
     </div>
 </section>
-
-<footer class="bg-dark text-white py-4 mt-5 text-center">
-    <div class="container">
-        <p class="mb-0">Bersama laut, kami tumbuh | Van's Aquatic</p>
-        <p class="mb-0 small">&copy; {{ date('Y') }} Van's Aquatic. All rights reserved.</p>
-        
-        {{-- Tombol Logout di Footer (Optional, hanya tampil jika @auth) --}}
-        @auth
-        <form id="logout-form-footer" action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="btn btn-link btn-sm text-warning mt-2 p-0">
-                <i class="mdi mdi-logout-variant me-1"></i> Logout
-            </button>
-        </form>
-        @endauth
-    </div>
-</footer>
 
 @endsection

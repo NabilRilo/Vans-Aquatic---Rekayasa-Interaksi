@@ -16,11 +16,13 @@
     --transition-fast: 0.2s ease;
     --transition-medium: 0.3s ease;
 }
-
-/* Body */
+   
 body {
+    min-height: 100vh;
     font-family: var(--primary-font);
-    background-color: var(--color-bg-body);
+    background: linear-gradient(to bottom, #e0f2f7, #ffffff); 
+    background-color: transparent;
+    background-attachment: fixed;
     color: var(--color-text-dark);
     margin: 0;
     padding: 20px 0;

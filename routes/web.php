@@ -94,4 +94,9 @@ Route::get('/upload-vidio', function () {
     return view('UploadVidio');
 })->name('upload.vidio');
 
+Route::get('/claim/sukses', function () {
+    return view('claim.sukses');
+})->name('claim.sukses');
+
+
 });

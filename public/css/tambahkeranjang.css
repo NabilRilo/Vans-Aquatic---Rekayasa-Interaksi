@@ -1,3 +1,19 @@
+html {
+    height: 100%; 
+}
+
+body {
+    min-height: 100vh; /* Kunci: Menggunakan viewport height untuk tinggi minimal */
+    margin: 0;
+    padding: 0;
+    
+    /* Pindahkan gradient ke body */
+    background: linear-gradient(to bottom, #e0f2f7, #ffffff); 
+    background-color: transparent; 
+    
+    /* Opsi: Untuk memastikan gradient stabil saat scroll */
+    background-attachment: fixed;
+}
 .cart-page-container {
     background-color: #f8fafc;
     padding: 2.5rem;

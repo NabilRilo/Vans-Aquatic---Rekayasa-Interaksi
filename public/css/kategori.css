@@ -1,6 +1,27 @@
+/* === PERBAIKAN UNTUK FULL BACKGROUND GRADIENT DIMULAI DI SINI === */
+html {
+    height: 100%; 
+}
+
+body {
+    /* Set tinggi minimal 100% dari viewport */
+    min-height: 100vh; 
+    margin: 0;
+    padding: 0;
+    
+    font-family: 'Poppins', sans-serif;
+    /* Pindahkan gradient ke body */
+    background: linear-gradient(to bottom, #e0f2f7, #ffffff); 
+    background-color: transparent; 
+    color: #343a40;
+    
+    /* PENTING: Gunakan fixed agar gradient mengisi penuh dan tetap di tempat saat scroll */
+    background-attachment: fixed; 
+}
+
 /* Container Utama */
 .kategori-page-container {
-    background-color: #f8fafc;
+    background-color: #4f8ecd;
     padding: 2.5rem;
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
@@ -9,7 +30,8 @@
 
 /* Judul Halaman */
 .page-title {
-    color: #1e40af;
+    font-family: 'Merriweather', serif;
+    color: #005f73; /* Biru tua yang elegan */
     font-weight: 700;
     font-size: 2.5rem;
     text-align: center;

@@ -1,6 +1,7 @@
 @extends('layouts.app') 
 
 @section('content')
+<div class="container mt-5">
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
     <div class="card shadow-lg p-4" style="width: 100%; max-width: 450px;">
         <h2 class="card-title text-center mb-4">Buat Akun Baru</h2>

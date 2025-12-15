@@ -2,6 +2,11 @@
 
 @section('title', 'Claim Garansi')
 
+{{-- Menambahkan CSS kustom menggunakan @push('styles') --}}
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/claimgaransi.css') }}">
+@endpush
+
 @section('content')
 <div class="container mt-5">
     <h2 class="text-center mb-4 text-primary">
@@ -32,7 +37,19 @@
             <div class="mb-3">
                 <label for="bukti" class="form-label fw-bold">Upload Bukti (Foto/Video)</label>
                 <input type="file" name="bukti" id="bukti" class="form-control" accept="image/*,video/*" required>
+                
             </div>
+            <div class="alert alert-info rounded-4 mt-4">
+    <h6 class="fw-bold">
+        <i class="mdi mdi-information-outline me-1"></i> Syarat & Ketentuan Garansi:
+    </h6>
+    <ul class="mb-0">
+        <li>Garansi berlaku 3 hari setelah ikan diterima</li>
+        <li>Ikan harus masih dalam kondisi air pengiriman</li>
+        <li>Bukti foto/video harus jelas menunjukkan kondisi ikan</li>
+        <li>Claim akan diproses maksimal 1x24 jam</li>
+    </ul>
+</div>
 
             <div class="d-flex justify-content-between">
                 <a href="{{ route('riwayat.pesanan') }}" class="btn btn-secondary">

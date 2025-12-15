@@ -4,10 +4,34 @@
 
 @push('styles')
 <style>
-    .order-history-title {
-        color: #0d6efd;
-        font-weight: 700;
-    }
+    html {
+    height: 100%; 
+}
+
+body {
+    min-height: 100vh; /* Kunci: Menggunakan viewport height untuk tinggi minimal */
+    margin: 0;
+    padding: 0;
+    
+    /* Pindahkan gradient ke body */
+    background: linear-gradient(to bottom, #e0f2f7, #ffffff); 
+    background-color: transparent; 
+    
+    /* Opsi: Untuk memastikan gradient stabil saat scroll */
+    background-attachment: fixed;
+
+}
+.page-title {
+    font-family: 'Merriweather', serif;
+    color: #005f73; /* Biru tua yang elegan */
+    font-weight: 700;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
     .order-card {
         border: none;
         border-radius: 15px;
@@ -157,7 +181,8 @@
 </a>
                                         <a href="{{ route('claim.garansi', $order->id) }}" class="btn btn-sm btn-success">Claim Garansi</a>
 
-                                        <button class="btn btn-sm btn-outline-primary">Beli Lagi</button>
+                                        <a href="{{ route('fish.view') }}" class="btn btn-sm btn-outline-primary">Beli Lagi</a>
+
                                     </div>
                                 </div>
                             </div>

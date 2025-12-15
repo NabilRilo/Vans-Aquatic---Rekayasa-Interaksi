@@ -1,0 +1,20 @@
+html {
+    height: 100%; 
+}
+
+body {
+    min-height: 100vh; /* Kunci: Menggunakan viewport height untuk tinggi minimal */
+    margin: 0;
+    padding: 0;
+    
+    /* Pindahkan gradient ke body */
+    background: linear-gradient(to bottom, #e0f2f7, #ffffff); 
+    background-color: transparent; 
+    
+    /* Opsi: Untuk memastikan gradient stabil saat scroll */
+    background-attachment: fixed; 
+    
+    /* Jika Anda ingin font dan warna teks body default sama di semua halaman */
+    font-family: 'Poppins', sans-serif;
+    color: #343a40;
+}
