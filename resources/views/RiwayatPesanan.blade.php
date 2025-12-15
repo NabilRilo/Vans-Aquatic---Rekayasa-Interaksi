@@ -4,10 +4,34 @@
 
 @push('styles')
 <style>
-    .order-history-title {
-        color: #0d6efd;
-        font-weight: 700;
-    }
+    html {
+    height: 100%; 
+}
+
+body {
+    min-height: 100vh; /* Kunci: Menggunakan viewport height untuk tinggi minimal */
+    margin: 0;
+    padding: 0;
+    
+    /* Pindahkan gradient ke body */
+    background: linear-gradient(to bottom, #e0f2f7, #ffffff); 
+    background-color: transparent; 
+    
+    /* Opsi: Untuk memastikan gradient stabil saat scroll */
+    background-attachment: fixed;
+
+}
+.page-title {
+    font-family: 'Merriweather', serif;
+    color: #005f73; /* Biru tua yang elegan */
+    font-weight: 700;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
     .order-card {
         border: none;
         border-radius: 15px;
@@ -49,10 +73,14 @@
     </h1>
 
     @if ($orders->isEmpty())
-        <div class="alert alert-info text-center shadow-sm" role="alert">
-            <i class="mdi mdi-information-outline me-2"></i> Anda belum memiliki riwayat pesanan.
-            <br>
-            <a href="{{ route('home') }}" class="btn btn-sm btn-primary mt-3">Mulai Belanja Sekarang</a>
+        {{-- BAGIAN 1: EMPTY STATE YANG LEBIH BAGUS --}}
+        <div class="alert alert-light text-center shadow-sm py-5 border-0" role="alert" style="background-color: #f0f8ff;">
+            <i class="mdi mdi-cart-off mdi-48px text-muted mb-3 d-block"></i>
+            <h4 class="fw-bold text-dark">Belum ada pesanan nih!</h4>
+            <p class="text-muted">Yuk, isi akuariummu dengan ikan hias dan perlengkapan terbaik kami.</p>
+            <a href="{{ route('home') }}" class="btn btn-primary mt-3 rounded-pill px-4 shadow-sm">
+                <i class="mdi mdi-shopping me-1"></i> Mulai Belanja Sekarang
+            </a>
         </div>
     @else
         <div class="accordion" id="riwayatPesananAccordion">
@@ -80,12 +108,12 @@
                             </div>
 
                             @php
-                                $status_text = $order->status; // Ambil dari database
+                                $status_text = $order->status;
                                 if($status_text == 'Proses'){
                                     $status_class = 'bg-primary';
                                     $status_icon = 'mdi-progress-clock';
-                                } elseif($status_text == 'Diantarkan'){
-                                    $status_class = 'bg-warning';
+                                } elseif($status_text == 'Diantarkan' || $status_text == 'Dalam Perjalanan'){
+                                    $status_class = 'bg-warning text-dark';
                                     $status_icon = 'mdi-truck-delivery';
                                 } elseif($status_text == 'Selesai'){
                                     $status_class = 'bg-success';
@@ -96,7 +124,7 @@
                                 }
                             @endphp
 
-                            <span class="badge {{ $status_class }} status-badge-custom">
+                            <span class="badge {{ $status_class }} status-badge-custom shadow-sm">
                                 <i class="mdi {{ $status_icon }} me-1"></i> {{ $status_text }}
                             </span>
                         </div>
@@ -116,10 +144,15 @@
                                     <h6 class="fw-bold mb-3 text-primary">
                                         <i class="mdi mdi-map-marker-outline me-2"></i> Info Pengiriman & Kontak
                                     </h6>
-                                    <p class="mb-1"><span class="fw-bold">Pembeli:</span> {{ $order->nama_pembeli }}</p>
-                                    <p class="mb-1"><span class="fw-bold">Alamat:</span> {{ $order->alamat }}</p>
-                                    <p class="mb-1"><span class="fw-bold">No. HP:</span> {{ $order->no_hp }}</p>
-                                    <p class="mb-1"><span class="fw-bold">Metode Bayar:</span> {{ $order->metode_pembayaran }}</p>
+                                    <div class="bg-white p-3 rounded shadow-sm border">
+                                        <p class="mb-1"><span class="fw-bold small text-muted">PEMBELI:</span> <br> {{ $order->nama_pembeli }}</p>
+                                        <hr class="my-2">
+                                        <p class="mb-1"><span class="fw-bold small text-muted">ALAMAT:</span> <br> {{ $order->alamat }}</p>
+                                        <hr class="my-2">
+                                        <p class="mb-1"><span class="fw-bold small text-muted">NO. HP:</span> <br> {{ $order->no_hp }}</p>
+                                        <hr class="my-2">
+                                        <p class="mb-0"><span class="fw-bold small text-muted">METODE BAYAR:</span> <br> {{ $order->metode_pembayaran }}</p>
+                                    </div>
                                 </div>
 
                                 {{-- Produk Dipesan --}}
@@ -128,36 +161,50 @@
                                         <i class="mdi mdi-basket-fill me-2"></i> Detail Barang
                                     </h6>
 
-                                    <ul class="list-group list-group-flush bg-light">
+                                    <ul class="list-group list-group-flush bg-light rounded">
                                         @foreach($order->items as $item)
-                                            <li class="list-group-item bg-light d-flex align-items-center">
+                                            <li class="list-group-item bg-light d-flex align-items-center border-bottom">
                                                 {{-- Foto produk --}}
                                                 @php
                                                     $img = $item->produk->all_images[0] ?? $item->produk->gambar ?? 'default.jpg';
                                                 @endphp
                                                 <img src="{{ asset('storage/' . $img) }}" 
                                                      alt="{{ $item->produk->nama }}" 
-                                                     class="produk-img me-3">
+                                                     class="produk-img me-3 shadow-sm border">
 
                                                 <div class="flex-grow-1">
-                                                    <span class="fw-bold">{{ $item->produk->nama }}</span> ({{ $item->jumlah }}x) <br>
-                                                    <small class="text-muted">Rp {{ number_format($item->harga, 0, ',', '.') }}</small>
+                                                    <span class="fw-bold text-dark">{{ $item->produk->nama }}</span> 
+                                                    <span class="badge bg-secondary rounded-pill ms-1">{{ $item->jumlah }}x</span> <br>
+                                                    <small class="text-muted">@ Rp {{ number_format($item->harga, 0, ',', '.') }}</small>
                                                 </div>
 
-                                                <span class="fw-bold">
+                                                <span class="fw-bold text-primary">
                                                     Rp {{ number_format($item->harga * $item->jumlah, 0, ',', '.') }}
                                                 </span>
                                             </li>
                                         @endforeach
                                     </ul>
 
-                                    <div class="text-end mt-3">
-                                        <a href="{{ route('upload.vidio') }}" class="btn btn-sm btn-success">
-    <i class="mdi mdi-video-plus me-1"></i> Upload Live Video
-</a>
-                                        <a href="{{ route('claim.garansi', $order->id) }}" class="btn btn-sm btn-success">Claim Garansi</a>
+                                    {{-- BAGIAN 2: TOMBOL DENGAN TOOLTIP DAN IKON --}}
+                                    <div class="text-end mt-4">
+                                        <a href="{{ route('upload.vidio') }}" class="btn btn-sm btn-success mb-1 shadow-sm"
+                                           data-bs-toggle="tooltip" title="Wajib upload video unboxing untuk klaim">
+                                            <i class="mdi mdi-video-plus me-1"></i> Upload Live Video
+                                        </a>
+                                        
+                                        <a href="{{ route('claim.garansi', $order->id) }}" class="btn btn-sm btn-warning text-dark mb-1 shadow-sm"
+                                           title="Ajukan klaim garansi jika ada masalah">
+                                            <i class="mdi mdi-shield-check-outline me-1"></i> Claim Garansi
+                                        </a>
 
-                                        <button class="btn btn-sm btn-outline-primary">Beli Lagi</button>
+<<<<<<< HEAD
+                                        <a href="{{ route('fish.view') }}" class="btn btn-sm btn-outline-primary">Beli Lagi</a>
+
+=======
+                                        <button class="btn btn-sm btn-outline-primary mb-1 shadow-sm" title="Beli produk ini lagi">
+                                            <i class="mdi mdi-refresh me-1"></i> Beli Lagi
+                                        </button>
+>>>>>>> 04a05182ce796a634541921d7f7b5166c7cb3210
                                     </div>
                                 </div>
                             </div>
@@ -168,8 +215,18 @@
         </div>
     @endif
 
-    <div class="mt-5 text-center">
-        <a href="{{ route('home') }}" class="btn btn-secondary">
+    {{-- BAGIAN 3: FOOTER NOTE TAMBAHAN --}}
+    <div class="mt-4 mb-5">
+        <div class="alert alert-light border d-flex align-items-center small text-muted justify-content-center" role="alert">
+            <i class="mdi mdi-information text-info me-2 fs-5"></i>
+            <div>
+                <strong>Info:</strong> Status pesanan diperbarui otomatis. Hubungi admin jika status tidak berubah 2x24 jam.
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mb-5">
+        <a href="{{ route('home') }}" class="btn btn-secondary shadow-sm px-4">
             <i class="mdi mdi-home me-2"></i> Kembali ke Beranda
         </a>
     </div>
@@ -185,5 +242,11 @@
             icon.classList.toggle('mdi-chevron-up');
         });
     });
+
+    // Mengaktifkan Tooltip Bootstrap (Jika belum aktif di global script)
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
 </script>
 @endpush

@@ -135,6 +135,6 @@ class CheckoutController extends Controller
             'status' => 'Menunggu Konfirmasi',
         ]);
 
-        return redirect()->route('riwayat.pesanan')->with('success', 'Claim garansi berhasil dikirim!');
+        return redirect()->route('claim.sukses')->with('success', 'Claim garansi berhasil dikirim!');
     }
 }

@@ -1,0 +1,76 @@
+/* =======================
+   CARD CONTAINER
+======================= */
+.card {
+    border: none;
+    border-radius: 20px;
+}
+
+/* =======================
+   UPLOAD AREA BOX
+======================= */
+.upload-box {
+    border: 2px dashed #bcdcff;
+    border-radius: 20px;
+    padding: 45px;
+    background: #f9fcff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    width: 100%;
+}
+
+.upload-box:hover {
+    background-color: #eef7ff;
+    border-color: #0d6efd;
+}
+
+/* Drag & Drop Active Highlight */
+.upload-box.dragging {
+    border-color: #0d6efd;
+    background-color: #e6f3ff;
+}
+
+/* Isi Upload di Tengah */
+.upload-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;     /* center horizontal */
+    justify-content: center; /* center vertical */
+    width: 100%;             /* pastikan area full */
+    height: 100%;
+    text-align: center;
+}
+
+/* Ikon Upload */
+.upload-icon i {
+    font-size: 60px;
+    color: #0d6efd;
+}
+
+/* =======================
+   ALERT / INFO BOX
+======================= */
+.alert-info {
+    background-color: #e9f4ff;
+    border: 1px solid #b7dcff;
+    border-radius: 15px;
+}
+
+.alert-info ul {
+    margin-bottom: 0;
+    padding-left: 18px;
+}
+
+/* =======================
+   BUTTONS
+======================= */
+.btn {
+    font-weight: 600;
+}
+
+.btn-primary,
+.btn-secondary {
+    border-radius: 50px;
+    padding: 10px 30px;
+}
