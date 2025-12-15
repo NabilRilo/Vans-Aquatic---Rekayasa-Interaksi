@@ -196,15 +196,7 @@ body {
                                            title="Ajukan klaim garansi jika ada masalah">
                                             <i class="mdi mdi-shield-check-outline me-1"></i> Claim Garansi
                                         </a>
-
-<<<<<<< HEAD
                                         <a href="{{ route('fish.view') }}" class="btn btn-sm btn-outline-primary">Beli Lagi</a>
-
-=======
-                                        <button class="btn btn-sm btn-outline-primary mb-1 shadow-sm" title="Beli produk ini lagi">
-                                            <i class="mdi mdi-refresh me-1"></i> Beli Lagi
-                                        </button>
->>>>>>> 04a05182ce796a634541921d7f7b5166c7cb3210
                                     </div>
                                 </div>
                             </div>
