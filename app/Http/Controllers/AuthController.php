@@ -62,7 +62,7 @@ class AuthController extends Controller
         return redirect(route('home'));
     }
 
-    // E. LOGOUT
+    // E. PROSES LOGOUT
     public function logout(Request $request)
     {
         Auth::logout();
